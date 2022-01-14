@@ -1,0 +1,24 @@
+.item_wrapper{
+    width: 1000px;
+    padding: 10px;
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.item{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.itemText{
+    width: 150px;
+    word-break: break-all;
+}
+
+#status{
+    border: 1px solid silver;
+}
