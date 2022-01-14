@@ -14,7 +14,6 @@ function App() {
         <Button></Button>
       </div>
       <div className='item_wrapper'>
-        {/* <Item></Item> */}
         <ItemList></ItemList>
       </div>
 
