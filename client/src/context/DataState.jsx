@@ -11,9 +11,7 @@ export const DataState = ({ children }) => {
         todoList: [
         ],
 
-        selectedList: [
-            "None", "In Progress", "Need Review", "Done"
-        ],
+        selectedList: ["None", "In Progress", "Need Review", "Done"],
 
         status: "None"
 
@@ -26,19 +24,24 @@ export const DataState = ({ children }) => {
     }
 
     const sendInput = () => {
+        if (state.input.trim()) {
+            const currentDate = new Date()
 
-        const currentDate = new Date()
+            const Year = currentDate.getFullYear();
+            const Month = currentDate.getMonth();
+            const Day = currentDate.getDate();
+            const Hour = currentDate.getHours();
+            const Minutes = currentDate.getMinutes();
+            const Time = currentDate.getTime()
 
-        const Year = currentDate.getFullYear();
-        const Month = currentDate.getMonth();
-        const Day = currentDate.getDate();
-        const Hour = currentDate.getHours();
-        const Minutes = currentDate.getMinutes();
-        const Time = currentDate.getTime()
+            const payload = { body: state.input, date: `${Hour}:${Minutes} ${Year}.${Month + 1}.${Day}`, Time, status: "None" }
+            localStorage.setItem(payload.Time, JSON.stringify(payload))
+            dispatch({ type: SEND_INPUT, payload })
+        } else {
+            alert('Add somthing')
+        }
 
-        const payload = { body: state.input, date: `${Hour}:${Minutes} ${Year}.${Month + 1}.${Day}`, Time, status: "None" }
-        localStorage.setItem(payload.Time, JSON.stringify(payload))
-        dispatch({ type: SEND_INPUT, payload })
+
     }
 
     const changeSelect = (select, id) => {
@@ -53,10 +56,10 @@ export const DataState = ({ children }) => {
         while (i--) {
             values.push(localStorage.getItem(keys[i]));
             endValues.push((JSON.parse(values)));
-            values.splice(0,1)
+            values.splice(0, 1)
         }
         console.log(endValues);
-        dispatch({type:GET_FROM_STORAGE, endValues})
+        dispatch({ type: GET_FROM_STORAGE, endValues })
     }, [])
 
     return (

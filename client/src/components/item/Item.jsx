@@ -12,8 +12,8 @@ function Item() {
             {
                 state.todoList.map((item, i) => {
                     return (
-                        <div style={item.status == "None" ? style={backgroundColor : "grey"} : item.status == "In Progress" ? style={backgroundColor : "blue"} : item.status == "Need Review" ? style={backgroundColor:"purple"} : style={backgroundColor : "green"}} 
-                        key={item.time} className={classes.item_wrapper}>
+                        <div key={item.Time} style={item.status == "None" ? style={backgroundColor : "grey"} : item.status == "In Progress" ? style={backgroundColor : "blue"} : item.status == "Need Review" ? style={backgroundColor:"purple"} : style={backgroundColor : "green"}} 
+                         className={classes.item_wrapper}>
                             <p className={classes.itemText}>{i + 1})</p>
                             <p className={classes.itemText}>{item.body}</p>
                             <p className={classes.itemText}>{item.date}</p>
