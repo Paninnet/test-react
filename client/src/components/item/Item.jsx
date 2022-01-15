@@ -3,7 +3,7 @@ import { dataContext } from '../../context/dataContext'
 import classes from './Item.module.css'
 
 function Item() {
-    const { state, changeSelect } = useContext(dataContext)
+    const { state, changeSelect , remove_item} = useContext(dataContext)
     let style = {
         backgroundColor: "red"
     }
@@ -18,13 +18,14 @@ function Item() {
                             <p className={classes.itemText}>{item.body}</p>
                             <p className={classes.itemText}>{item.date}</p>
                             <div>
-                                <select onChange={e => changeSelect(e.target.value,i)} name='status' id='status'>
+                                <select value ={item.status} onChange={e => changeSelect(e.target.value,i ,item)} name='status' id='status'>
                                     {state.selectedList.map((item, i) => {
                                         return (
                                             <option key={item.Time} value={item}>{item}</option>
                                         )
                                     })}
                                 </select>
+                                <button className={classes.deleteItem} onClick={() =>remove_item(item.Time)} >Delete</button>
                             </div>
                         </div>
                     )

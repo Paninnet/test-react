@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from "react"
 import { dataContext } from "./dataContext"
-import { CHANGE_INPUT, CHANGE_SELECT, dataReducer, GET_FROM_STORAGE, SEND_INPUT } from "./dataReducer"
+import { CHANGE_INPUT, CHANGE_SELECT, dataReducer, GET_FROM_STORAGE, REMOVE_ITEM, SEND_INPUT } from "./dataReducer"
 
 export const DataState = ({ children }) => {
 
@@ -8,12 +8,11 @@ export const DataState = ({ children }) => {
 
         input: "",
 
-        todoList: [
-        ],
+        todoList: [],
 
         selectedList: ["None", "In Progress", "Need Review", "Done"],
 
-        status: "None"
+        status: ""
 
     }
 
@@ -24,28 +23,35 @@ export const DataState = ({ children }) => {
     }
 
     const sendInput = () => {
+
         if (state.input.trim()) {
             const currentDate = new Date()
-
             const Year = currentDate.getFullYear();
             const Month = currentDate.getMonth();
             const Day = currentDate.getDate();
             const Hour = currentDate.getHours();
             const Minutes = currentDate.getMinutes();
             const Time = currentDate.getTime()
+            const text = state.input.trim()
 
-            const payload = { body: state.input, date: `${Hour}:${Minutes} ${Year}.${Month + 1}.${Day}`, Time, status: "None" }
+            const payload = { body: text, date: `${Hour}:${Minutes} ${Year}.${Month + 1}.${Day}`, Time, status: "None" }
             localStorage.setItem(payload.Time, JSON.stringify(payload))
             dispatch({ type: SEND_INPUT, payload })
         } else {
             alert('Add somthing')
         }
-
-
     }
 
-    const changeSelect = (select, id) => {
+    const changeSelect = (select, id ,item) => {
+        const point = JSON.parse( localStorage.getItem(item.Time))
+        point.status = select
+        localStorage.setItem(point.Time,JSON.stringify(point))
         dispatch({ type: CHANGE_SELECT, select, id })
+    }
+
+    const remove_item = (id) => {
+        localStorage.removeItem(id)
+        dispatch({type:REMOVE_ITEM,id})
     }
 
     useEffect(() => {
@@ -63,7 +69,7 @@ export const DataState = ({ children }) => {
     }, [])
 
     return (
-        <dataContext.Provider value={{ state, changeInput, sendInput, changeSelect }}>
+        <dataContext.Provider value={{ state, changeInput, sendInput, changeSelect, remove_item }}>
             {children}
         </dataContext.Provider>
     )

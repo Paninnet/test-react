@@ -22,3 +22,7 @@
 #status{
     border: 1px solid silver;
 }
+
+.deleteItem{
+    margin-left: 5px;
+}
