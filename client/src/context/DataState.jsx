@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from "react"
 import { dataContext } from "./dataContext"
-import { CHANGE_INPUT, CHANGE_SELECT, dataReducer, GET_FROM_STORAGE, REMOVE_ITEM, SEND_INPUT } from "./dataReducer"
+import { CHANGE_INPUT, CHANGE_SELECT, CHANGE_SORT, dataReducer, GET_FROM_STORAGE, REMOVE_ITEM, SEND_INPUT } from "./dataReducer"
 
 export const DataState = ({ children }) => {
 
@@ -11,6 +11,8 @@ export const DataState = ({ children }) => {
         todoList: [],
 
         selectedList: ["None", "In Progress", "Need Review", "Done"],
+
+        sortItem : ["Old To Do", "New To Do"],
 
         status: ""
 
@@ -49,6 +51,17 @@ export const DataState = ({ children }) => {
         dispatch({ type: CHANGE_SELECT, select, id })
     }
 
+    const changeSort = (sortType) => {
+        console.log((sortType));
+        if (sortType == "New To Do"){
+            const sortedItem = state.todoList.sort((a, b) => (a.Time < b.Time) ? 1 : -1)
+            dispatch({type:CHANGE_SORT,sortedItem})
+        }else if (sortType == "Old To Do") {
+            const sortedItem = state.todoList.sort((a, b) => (a.Time > b.Time) ? 1 : -1)
+            dispatch({type:CHANGE_SORT,sortedItem})
+        }
+    }
+
     const remove_item = (id) => {
         localStorage.removeItem(id)
         dispatch({type:REMOVE_ITEM,id})
@@ -64,12 +77,13 @@ export const DataState = ({ children }) => {
             endValues.push((JSON.parse(values)));
             values.splice(0, 1)
         }
-        console.log(endValues);
+        endValues.sort((a, b) => (a.Time > b.Time) ? 1 : -1)
+
         dispatch({ type: GET_FROM_STORAGE, endValues })
     }, [])
 
     return (
-        <dataContext.Provider value={{ state, changeInput, sendInput, changeSelect, remove_item }}>
+        <dataContext.Provider value={{ state, changeInput, sendInput, changeSelect, remove_item, changeSort }}>
             {children}
         </dataContext.Provider>
     )

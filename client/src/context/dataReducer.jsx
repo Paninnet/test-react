@@ -3,6 +3,7 @@ export const CHANGE_INPUT = "CHANGE_INPUT"
 export const SEND_INPUT = "SEND_INPUT"
 export const CHANGE_SELECT = "CHANGE_SELECT"
 export const REMOVE_ITEM = "REMOVE_ITEM"
+export const CHANGE_SORT = "CHANGE_SORT"
 
 
 export const dataReducer = (state,action) => {
@@ -17,6 +18,8 @@ export const dataReducer = (state,action) => {
             return{...state, todoList:[...state.todoList = action.endValues]}
         case REMOVE_ITEM:
             return{...state, todoList:[...state.todoList.filter(n => n.Time !== action.id)]} 
+        case CHANGE_SORT:
+            return{...state,todoList:[...state.todoList = action.sortedItem]}
     
         default:
             return{...state};
