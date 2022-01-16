@@ -13,3 +13,11 @@
   display: flex;
   justify-content: center;
 }
+
+.action_with_state{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 15px;
+}

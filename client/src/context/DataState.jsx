@@ -1,6 +1,6 @@
 import { useEffect, useReducer } from "react"
 import { dataContext } from "./dataContext"
-import { CHANGE_INPUT, CHANGE_SELECT, CHANGE_SORT, dataReducer, GET_FROM_STORAGE, REMOVE_ITEM, SEND_INPUT } from "./dataReducer"
+import { CHANGE_INPUT, CHANGE_SELECT, CHANGE_SORT, dataReducer, FILTER_CHANGE, GET_FROM_STORAGE, REMOVE_ITEM, SEND_INPUT } from "./dataReducer"
 
 export const DataState = ({ children }) => {
 
@@ -10,9 +10,13 @@ export const DataState = ({ children }) => {
 
         todoList: [],
 
+        filteredToDoList : [],
+
         selectedList: ["None", "In Progress", "Need Review", "Done"],
 
-        sortItem : ["Old To Do", "New To Do"],
+        sortItem: ["Old To Do", "New To Do"],
+
+        filterItem: ["All", "None", "In Progress", "Need Review", "Done"],
 
         status: ""
 
@@ -44,27 +48,51 @@ export const DataState = ({ children }) => {
         }
     }
 
-    const changeSelect = (select, id ,item) => {
-        const point = JSON.parse( localStorage.getItem(item.Time))
+    const changeSelect = (select, id, item) => {
+        const point = JSON.parse(localStorage.getItem(item.Time))
         point.status = select
-        localStorage.setItem(point.Time,JSON.stringify(point))
+        localStorage.setItem(point.Time, JSON.stringify(point))
         dispatch({ type: CHANGE_SELECT, select, id })
     }
 
     const changeSort = (sortType) => {
         console.log((sortType));
-        if (sortType == "New To Do"){
+        if (sortType == "New To Do") {
             const sortedItem = state.todoList.sort((a, b) => (a.Time < b.Time) ? 1 : -1)
-            dispatch({type:CHANGE_SORT,sortedItem})
-        }else if (sortType == "Old To Do") {
+            dispatch({ type: CHANGE_SORT, sortedItem })
+        } else if (sortType == "Old To Do") {
             const sortedItem = state.todoList.sort((a, b) => (a.Time > b.Time) ? 1 : -1)
-            dispatch({type:CHANGE_SORT,sortedItem})
+            dispatch({ type: CHANGE_SORT, sortedItem })
         }
     }
 
     const remove_item = (id) => {
         localStorage.removeItem(id)
-        dispatch({type:REMOVE_ITEM,id})
+        dispatch({ type: REMOVE_ITEM, id })
+    }
+
+    const changeFilter = (param) => {
+        console.log(param);
+
+        if (param == "All") {
+            
+            state.filteredToDoList = {...state.todoList}
+            dispatch({ type: FILTER_CHANGE, param })
+        }
+        else {
+
+        }
+
+        // const filetredToDoList = { ...state.todoList }
+        // console.log(filetredToDoList);
+
+        // if (param == "All") {
+        //     dispatch({ type: FILTER_CHANGE, param })
+        // }
+        // else {
+
+        // }
+
     }
 
     useEffect(() => {
@@ -83,7 +111,7 @@ export const DataState = ({ children }) => {
     }, [])
 
     return (
-        <dataContext.Provider value={{ state, changeInput, sendInput, changeSelect, remove_item, changeSort }}>
+        <dataContext.Provider value={{ state, changeInput, sendInput, changeSelect, remove_item, changeSort, changeFilter }}>
             {children}
         </dataContext.Provider>
     )
