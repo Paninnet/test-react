@@ -6,7 +6,7 @@ function Filter() {
    return (
       <div>
          
-         Filter by: <select disabled={state.todoList.length <= 1 ? true : false} onChange={e => changeFilter(e.target.value)}>
+         Filter by: <select onChange={e => changeFilter(e.target.value)}>
             {state.filterItem.map((item, i) => {
                return <option key={i} value={item}>{item}</option>
             })}
