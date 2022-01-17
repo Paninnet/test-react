@@ -4,7 +4,7 @@ import { dataContext } from '../../context/dataContext'
 function Sort() {
    const {state, changeSort} = useContext(dataContext)
    return (
-      <div style={{marginRight:"15px"}}>
+      <div  style={{marginRight:"15px"}}>
           Sort by: <select disabled={state.todoList.length <= 1 ? true : false}  onChange={(e) => changeSort(e.target.value)}>
          {state.sortItem.map((item) => {
             return (
