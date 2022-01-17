@@ -10,11 +10,11 @@ export const DataState = ({ children }) => {
 
         todoList: [],
 
-        filteredToDoList : [],
+        filteredToDoList: [],
 
         selectedList: ["None", "In Progress", "Need Review", "Done"],
 
-        sortItem: ["Old To Do", "New To Do"],
+        sortItem: ["Old To Do", "New To Do", "Status"],
 
         filterItem: ["All", "None", "In Progress", "Need Review", "Done"],
 
@@ -26,6 +26,19 @@ export const DataState = ({ children }) => {
 
     const changeInput = (newText) => {
         dispatch({ type: CHANGE_INPUT, newText })
+    }
+
+    const getdata = () => {
+        const endValues = []
+        let values = [],
+            keys = Object.keys(localStorage),
+            i = keys.length;
+        while (i--) {
+            values.push(localStorage.getItem(keys[i]));
+            endValues.push((JSON.parse(values)));
+            values.splice(0, 1)
+        }
+        return endValues.sort((a, b) => (a.Time > b.Time) ? 1 : -1)
     }
 
     const sendInput = () => {
@@ -63,6 +76,9 @@ export const DataState = ({ children }) => {
         } else if (sortType == "Old To Do") {
             const sortedItem = state.todoList.sort((a, b) => (a.Time > b.Time) ? 1 : -1)
             dispatch({ type: CHANGE_SORT, sortedItem })
+        } else if (sortType == "Status") {
+            const sortedItem = state.todoList.sort((a, b) => (a.status < b.status) ? 1 : -1)
+            dispatch({ type: CHANGE_SORT, sortedItem })
         }
     }
 
@@ -75,39 +91,19 @@ export const DataState = ({ children }) => {
         console.log(param);
 
         if (param == "All") {
-            
-            state.filteredToDoList = {...state.todoList}
-            dispatch({ type: FILTER_CHANGE, param })
+            const endValues = getdata()
+            dispatch({type:GET_FROM_STORAGE,endValues})
         }
-        else {
-
+        else{
+            const endValues = getdata()
+            dispatch({type:GET_FROM_STORAGE,endValues})
+            dispatch({type:FILTER_CHANGE,endValues,param})
         }
-
-        // const filetredToDoList = { ...state.todoList }
-        // console.log(filetredToDoList);
-
-        // if (param == "All") {
-        //     dispatch({ type: FILTER_CHANGE, param })
-        // }
-        // else {
-
-        // }
-
     }
 
     useEffect(() => {
-        const endValues = []
-        let values = [],
-            keys = Object.keys(localStorage),
-            i = keys.length;
-        while (i--) {
-            values.push(localStorage.getItem(keys[i]));
-            endValues.push((JSON.parse(values)));
-            values.splice(0, 1)
-        }
-        endValues.sort((a, b) => (a.Time > b.Time) ? 1 : -1)
-
-        dispatch({ type: GET_FROM_STORAGE, endValues })
+        const endValues = getdata()
+        dispatch({type:GET_FROM_STORAGE,endValues})
     }, [])
 
     return (

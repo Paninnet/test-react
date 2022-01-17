@@ -22,7 +22,7 @@ export const dataReducer = (state, action) => {
         case CHANGE_SORT:
             return { ...state, todoList: [...state.todoList = action.sortedItem] }
         case FILTER_CHANGE:
-            return {...state}
+            return {...state, todoList: [...state.todoList.filter(n => n.status === action.param)]}
 
         default:
             return { ...state };

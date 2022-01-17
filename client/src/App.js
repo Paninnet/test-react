@@ -17,7 +17,7 @@ function App() {
       </div>
       <div className='action_with_state'>
         <Sort></Sort>
-        {/* <Filter></Filter> */}
+        <Filter></Filter>
       </div>
       <div className='item_wrapper'>
         <ItemList></ItemList>
